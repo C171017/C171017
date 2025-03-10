@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>C171017</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Apple's SF font is proprietary, so we'll use system-ui font stack that includes SF Pro on Apple devices -->
+</head>
+<body>
+    <!-- Minimal content overlay -->
+    <div class="content">
+        <div class="header">
+            <h1>C171017</h1>
+            <a href="https://youtu.be/jwAp6cxBScI" target="_blank" rel="noopener noreferrer" class="link">Who Am I</a>
+            <a href="https://youtu.be/RKF_uDYrnuk" target="_blank" rel="noopener noreferrer" class="link">Why Am I Here</a>
+            <a href="https://github.com/C171017" target="_blank" rel="noopener noreferrer" class="github-link">
+                <img src="image/github icon.png" alt="GitHub" class="github-icon">
+            </a>
+        </div>
+    </div>
+
+    <!-- Video container -->
+    <div class="video-container">
+        <video id="scroll-video" preload="auto" muted playsinline webkit-playsinline>
+            <source src="video/videoBackground.mp4" type="video/mp4">
+        </video>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const video = document.getElementById('scroll-video');
+            
+            // Function to ensure video covers the entire window
+            function resizeVideo() {
+                const windowRatio = window.innerWidth / window.innerHeight;
+                const videoRatio = video.videoWidth / video.videoHeight;
+                
+                if (windowRatio > videoRatio) {
+                    video.style.width = '100vw';
+                    video.style.height = 'auto';
+                } else {
+                    video.style.width = 'auto';
+                    video.style.height = '100vh';
+                }
+            }
+            
+            // Get total scrollable height
+            const scrollableHeight = document.body.scrollHeight - window.innerHeight;
+            
+            // Load the video metadata to get duration
+            video.addEventListener('loadedmetadata', function() {
+                resizeVideo();
+                
+                // Set up scroll event listener
+                window.addEventListener('scroll', function() {
+                    // Calculate scroll progress (0 to 1)
+                    const scrollProgress = window.scrollY / scrollableHeight;
+                    
+                    // Calculate the current time in the video based on scroll position
+                    const currentTime = scrollProgress * video.duration;
+                    
+                    // Update the video's current time
+                    video.currentTime = currentTime;
+                });
+            });
+            
+            // Handle window resize events
+            window.addEventListener('resize', resizeVideo);
+            
+            // Preload the video
+            video.load();
+        });
+    </script>
+</body>
+</html>
